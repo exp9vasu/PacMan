@@ -35,7 +35,6 @@ public class PacMove1 : MonoBehaviour
         prevX = currentX;
         prevY = currentY;
 
-
         //Instantiate(wallPrefab, new Vector3(transform.position.x, 2, transform.position.z), Quaternion.identity);
         if (transform.position.z >= 0 && transform.position.z < 32 && transform.position.x >= 0 && transform.position.x < 18)
         {

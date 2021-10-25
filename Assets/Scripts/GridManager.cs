@@ -18,6 +18,15 @@ public class GridManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        gridArray = new int[100,100];
+        for (int i = 0; i < 100; i++)
+        {
+            for (int j = 0; j < 100; j++)
+            {
+                //Instantiate(Prefab, new Vector3(i, unitsize, j), Quaternion.identity);
+                gridArray[i, j] = 0;
+            }
+    }
         StartCoroutine(ExecuteAfterTime(5));
     }
 
