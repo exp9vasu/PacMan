@@ -17,14 +17,23 @@ public class EnemyScript : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        
+        if (other.CompareTag("wall"))
+        {
+            Debug.Log("wall");
+            PacMove1.instance.PacDie();
+        }
+
+        if (other.CompareTag("Invibox"))
+        {
+            Destroy(gameObject);
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.collider.CompareTag("wall"))
-        {
-            Destroy(transform);
-        }
+        //if (collision.gameObject.CompareTag("wall"))
+        //{
+        //    PacMove1.instance.PacDie();
+        //}
     }
 }

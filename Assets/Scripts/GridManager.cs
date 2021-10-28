@@ -11,9 +11,12 @@ public class GridManager : MonoBehaviour
     public GameObject Prefab, wallPrefab;
     public GameObject Pac;
     public GameObject Apple, Particle, LosePanel;
+    public int nDied;
+
+    public Vector3 LastPos;
    
     public int count;
-    public PacMove pacMove;
+    public PacMove1 pacMove1;
 
     // Start is called before the first frame update
     void Start()
@@ -39,7 +42,7 @@ public class GridManager : MonoBehaviour
     public void Flare()
     {
         
-        pacMove.Particles.SetActive(true);
+        pacMove1.Particles.SetActive(true);
     }
 
     public void MoveUp()
@@ -84,10 +87,21 @@ public class GridManager : MonoBehaviour
     public IEnumerator ExecuteAfterTime1(float time)
     {
         yield return new WaitForSeconds(time);
-        LosePanel.SetActive(true);
+        //LosePanel.SetActive(true);
 
     }
     public void NextLevel()
     {
         SceneManager.LoadScene(0);}
+    
+    public IEnumerator ExecuteAfterTime2(float time)
+    {
+        yield return new WaitForSeconds(time);
+
+       Pac.GetComponent<MeshRenderer>().enabled = true;
+       pacMove1.eyes1.GetComponent<MeshRenderer>().enabled = true;
+        pacMove1.eyes2.GetComponent<MeshRenderer>().enabled = true;
+        Particle.SetActive(false);
+    }
+
 }

@@ -15,8 +15,8 @@ GameObject:
   - component: {fileID: 3947405949407687639}
   - component: {fileID: 8802889163854667437}
   m_Layer: 0
-  m_Name: WallBrick
-  m_TagString: wall
+  m_Name: WallBrick Inside
+  m_TagString: Invibox
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

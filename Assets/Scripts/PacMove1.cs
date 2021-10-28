@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PacMove1 : MonoBehaviour
 {
+    public static PacMove1 instance;
+    public GameObject Particles;
     public GameObject wallPrefab, PacMan;
     public GridManager gridManager;
     public Vector3 LastPos;
@@ -13,8 +15,20 @@ public class PacMove1 : MonoBehaviour
     public Vector2 lastMousePosition;
     private Vector2 touchPosition;
 
+    public GameObject InsideBox;
+
+    public GameObject eyes1,eyes2; 
+
     public int Count;
 
+
+    private void Awake()
+    {
+        if(instance == null)
+        {
+            instance = this;
+        }
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -40,30 +54,30 @@ public class PacMove1 : MonoBehaviour
         prevY = currentY;
 
         //Instantiate(wallPrefab, new Vector3(transform.position.x, 2, transform.position.z), Quaternion.identity);
-        if (transform.position.z >= 0 && transform.position.z < 32 && transform.position.x >= 0 && transform.position.x < 18)
+        if (transform.position.z >= 0 && transform.position.z < 32 && transform.position.x >= 0 && transform.position.x < 18 && transform.GetComponent<MeshRenderer>().enabled)
         {
-            if (Input.GetKey("w"))
+            if (Input.GetKeyDown("w"))
             {
                 //Instantiate(wallPrefab, new Vector3(transform.position.x, 2, transform.position.z), Quaternion.identity);
                 gridManager.MoveUp();
                 currentY++;
                 function(prevX, prevY);
             }
-            if (Input.GetKey("a"))
+            if (Input.GetKeyDown("a"))
             {
                 //Instantiate(wallPrefab, new Vector3(transform.position.x, 2, transform.position.z), Quaternion.identity);
                 gridManager.MoveLeft();
                 currentX--;
                 function(prevX, prevY);
             }
-            if (Input.GetKey("s"))
+            if (Input.GetKeyDown("s"))
             {
                 //Instantiate(wallPrefab, new Vector3(transform.position.x, 2, transform.position.z), Quaternion.identity);
                 gridManager.MoveDown();
                 currentY--;
                 function(prevX, prevY);
             }
-            if (Input.GetKey("d"))
+            if (Input.GetKeyDown("d"))
             {
 
                 //Instantiate(wallPrefab, new Vector3(transform.position.x, 2, transform.position.z), Quaternion.identity);
@@ -194,7 +208,7 @@ public class PacMove1 : MonoBehaviour
         }
         if (gridManager.gridArray[x, y] == -1)
         { return; }
-        Instantiate(wallPrefab, new Vector3(x, 2, y), Quaternion.identity);
+        Instantiate(InsideBox, new Vector3(x, 2, y), Quaternion.identity);
         Count++;
         gridManager.gridArray[x, y] = -1;
         fill(x + 1, y);
@@ -224,5 +238,31 @@ public class PacMove1 : MonoBehaviour
         }
 
         return;
+    }
+
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("enemy"))
+        {
+            PacDie();
+        }
+
+    }
+
+    public void PacDie()
+    {
+        LastPos = transform.position;
+        gridManager.Particle.transform.position = new Vector3(LastPos.x, LastPos.y, LastPos.z);
+        //gridManager.Particle.SetActive(true);
+        gridManager.Flare();
+
+        transform.GetComponent<MeshRenderer>().enabled = false;
+        eyes1.GetComponent<MeshRenderer>().enabled = false;
+        eyes2.GetComponent<MeshRenderer>().enabled = false;
+
+        gridManager.StartCoroutine(gridManager.ExecuteAfterTime1(2));
+        gridManager.StartCoroutine(gridManager.ExecuteAfterTime2(5));
+        //Destroy(transform.gameObject);
     }
 }
