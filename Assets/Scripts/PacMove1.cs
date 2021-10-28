@@ -13,9 +13,13 @@ public class PacMove1 : MonoBehaviour
     public Vector2 lastMousePosition;
     private Vector2 touchPosition;
 
+    public int Count;
+
     // Start is called before the first frame update
     void Start()
     {
+        Count = 0;
+
         //prevX = currentX;
         //prevY = currentY;
 
@@ -40,21 +44,21 @@ public class PacMove1 : MonoBehaviour
         {
             if (Input.GetKey("w"))
             {
-                Instantiate(wallPrefab, new Vector3(transform.position.x, 2, transform.position.z), Quaternion.identity);
+                //Instantiate(wallPrefab, new Vector3(transform.position.x, 2, transform.position.z), Quaternion.identity);
                 gridManager.MoveUp();
                 currentY++;
                 function(prevX, prevY);
             }
             if (Input.GetKey("a"))
             {
-                Instantiate(wallPrefab, new Vector3(transform.position.x, 2, transform.position.z), Quaternion.identity);
+                //Instantiate(wallPrefab, new Vector3(transform.position.x, 2, transform.position.z), Quaternion.identity);
                 gridManager.MoveLeft();
                 currentX--;
                 function(prevX, prevY);
             }
             if (Input.GetKey("s"))
             {
-                Instantiate(wallPrefab, new Vector3(transform.position.x, 2, transform.position.z), Quaternion.identity);
+                //Instantiate(wallPrefab, new Vector3(transform.position.x, 2, transform.position.z), Quaternion.identity);
                 gridManager.MoveDown();
                 currentY--;
                 function(prevX, prevY);
@@ -62,7 +66,7 @@ public class PacMove1 : MonoBehaviour
             if (Input.GetKey("d"))
             {
 
-                Instantiate(wallPrefab, new Vector3(transform.position.x, 2, transform.position.z), Quaternion.identity);
+                //Instantiate(wallPrefab, new Vector3(transform.position.x, 2, transform.position.z), Quaternion.identity);
                 gridManager.MoveRight();
                 currentX++;
                 function(prevX, prevY);
@@ -169,10 +173,10 @@ public class PacMove1 : MonoBehaviour
         {
             return true;
         }
-        Debug.Log("VasuX" + x);
-        Debug.Log("VasuY" + y);
+        //Debug.Log("VasuX" + x);
+        //Debug.Log("VasuY" + y);
 
-        Debug.Log("Vasu" + p);
+        //Debug.Log("Vasu" + p);
 
         if (gridManager.gridArray[x, y] != 0)
             return false;
@@ -191,6 +195,7 @@ public class PacMove1 : MonoBehaviour
         if (gridManager.gridArray[x, y] == -1)
         { return; }
         Instantiate(wallPrefab, new Vector3(x, 2, y), Quaternion.identity);
+        Count++;
         gridManager.gridArray[x, y] = -1;
         fill(x + 1, y);
         fill(x - 1, y);
@@ -204,6 +209,8 @@ public class PacMove1 : MonoBehaviour
         if (gridManager.gridArray[x, y] == -1)
         { return; }
 
+        Instantiate(wallPrefab, new Vector3(x, 2, y), Quaternion.identity);
+        Count++;
         gridManager.gridArray[x, y] = -1;
         int i = 1;
         int j = 1;
