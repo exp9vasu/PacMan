@@ -7,7 +7,7 @@ public class EnemyScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        GetComponent<ParticleSystem>().Stop();
     }
 
     // Update is called once per frame
@@ -19,13 +19,17 @@ public class EnemyScript : MonoBehaviour
     {
         if (other.CompareTag("wall"))
         {
-            Debug.Log("wall");
+            //Debug.Log("wall");
             PacMove1.instance.PacDie();
         }
 
         if (other.CompareTag("Invibox"))
         {
-            Destroy(gameObject);
+
+            GetComponent<ParticleSystem>().Play();
+            GetComponent<Animator>().enabled = false;
+            Destroy(gameObject, 3f);
+            
         }
     }
 

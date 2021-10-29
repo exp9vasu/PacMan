@@ -15,6 +15,8 @@ public class PacMove1 : MonoBehaviour
     public Vector2 lastMousePosition;
     private Vector2 touchPosition;
 
+    public int SwipeLength;
+
     public GameObject InsideBox;
 
     public GameObject eyes1,eyes2; 
@@ -56,35 +58,37 @@ public class PacMove1 : MonoBehaviour
         //Instantiate(wallPrefab, new Vector3(transform.position.x, 2, transform.position.z), Quaternion.identity);
         if (transform.position.z >= 0 && transform.position.z < 32 && transform.position.x >= 0 && transform.position.x < 18 && transform.GetComponent<MeshRenderer>().enabled)
         {
-            if (Input.GetKeyDown("w"))
+            
+            if (Input.GetKeyDown("w") /*|| SwipeManager.swipeUp*/ )
             {
                 //Instantiate(wallPrefab, new Vector3(transform.position.x, 2, transform.position.z), Quaternion.identity);
                 gridManager.MoveUp();
                 currentY++;
                 function(prevX, prevY);
             }
-            if (Input.GetKeyDown("a"))
+            if (Input.GetKeyDown("a") /*|| SwipeManager.swipeLeft*/)
             {
                 //Instantiate(wallPrefab, new Vector3(transform.position.x, 2, transform.position.z), Quaternion.identity);
                 gridManager.MoveLeft();
                 currentX--;
                 function(prevX, prevY);
             }
-            if (Input.GetKeyDown("s"))
+            if (Input.GetKeyDown("s") /*|| SwipeManager.swipeDown*/)
             {
                 //Instantiate(wallPrefab, new Vector3(transform.position.x, 2, transform.position.z), Quaternion.identity);
                 gridManager.MoveDown();
                 currentY--;
                 function(prevX, prevY);
             }
-            if (Input.GetKeyDown("d"))
+            if (Input.GetKeyDown("d") /*|| SwipeManager.swipeRight*/)
             {
-
                 //Instantiate(wallPrefab, new Vector3(transform.position.x, 2, transform.position.z), Quaternion.identity);
                 gridManager.MoveRight();
                 currentX++;
                 function(prevX, prevY);
             }
+            
+
         }
         if (transform.position.x >= 17)
         {
@@ -106,49 +110,87 @@ public class PacMove1 : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        if (Input.GetMouseButtonDown(0))
+        
+        if (transform.position.z >= 0 && transform.position.z < 32 && transform.position.x >= 0 && transform.position.x < 18 && transform.GetComponent<MeshRenderer>().enabled)
         {
-            touchPosition = Input.mousePosition;
-        }
+            if (Input.GetMouseButtonDown(0))
+            {
+                touchPosition = Input.mousePosition;
+            }
 
         if (Input.GetMouseButton(0))
         {
 
             Vector2 deltaSwipe = touchPosition - (Vector2)Input.mousePosition;
 
-            if ((Vector2)Input.mousePosition != lastMousePosition)
-            {
-                lastMousePosition = (Vector2)Input.mousePosition;
-
-                if (deltaSwipe.x < 0)
+                if ((Vector2)Input.mousePosition != lastMousePosition)
                 {
-                    Instantiate(wallPrefab, new Vector3(transform.position.x, 2, transform.position.z), Quaternion.identity);
-                    gridManager.MoveRight();
+                    lastMousePosition = (Vector2)Input.mousePosition;
+
+                    if (deltaSwipe.y < -SwipeLength && Mathf.Abs(deltaSwipe.y) > Mathf.Abs(deltaSwipe.x))
+                    {
+                        //Instantiate(wallPrefab, new Vector3(transform.position.x, 2, transform.position.z), Quaternion.identity);
+                        gridManager.MoveUp();
+                        currentY++;
+                        function(prevX, prevY);
+                        Debug.Log("y+");
+                    }
+                    if (deltaSwipe.x > SwipeLength && Mathf.Abs(deltaSwipe.x) > Mathf.Abs(deltaSwipe.y))
+                    {
+                        //Instantiate(wallPrefab, new Vector3(transform.position.x, 2, transform.position.z), Quaternion.identity);
+                        gridManager.MoveLeft();
+                        currentX--;
+                        function(prevX, prevY);
+                        Debug.Log("x-");
+                    }
+                    if (Mathf.Abs(deltaSwipe.y) > Mathf.Abs(deltaSwipe.x) && deltaSwipe.y > SwipeLength)
+                    {
+                        //Instantiate(wallPrefab, new Vector3(transform.position.x, 2, transform.position.z), Quaternion.identity);
+                        gridManager.MoveDown();
+                        currentY--;
+                        function(prevX, prevY);
+                        Debug.Log("y-");
+                    }
+                    if (deltaSwipe.x < -SwipeLength && Mathf.Abs(deltaSwipe.x) > Mathf.Abs(deltaSwipe.y))
+                    {
+                        //Instantiate(wallPrefab, new Vector3(transform.position.x, 2, transform.position.z), Quaternion.identity);
+                        gridManager.MoveRight();
+                        currentX++;
+                        function(prevX, prevY);
+                        Debug.Log("x+");
+                    }
                 }
 
-                if (deltaSwipe.x > 0)
-                {
+             //   if (deltaSwipe.x < 0)
+             //       {
+             //           Instantiate(wallPrefab, new Vector3(transform.position.x, 2, transform.position.z), Quaternion.identity);
+             //           gridManager.MoveRight();
+             //       }
 
-                    Instantiate(wallPrefab, new Vector3(transform.position.x, 2, transform.position.z), Quaternion.identity);
-                    gridManager.MoveLeft();
-                }
-                if (deltaSwipe.y < 0)
-                {
-                    Instantiate(wallPrefab, new Vector3(transform.position.x, 2, transform.position.z), Quaternion.identity);
-                    gridManager.MoveDown();
+             //       if (deltaSwipe.x > 0)
+             //       {
 
-                }
+             //           Instantiate(wallPrefab, new Vector3(transform.position.x, 2, transform.position.z), Quaternion.identity);
+             //           gridManager.MoveLeft();
+             //       }
+             //       if (deltaSwipe.y < 0)
+             //       {
+             //           Instantiate(wallPrefab, new Vector3(transform.position.x, 2, transform.position.z), Quaternion.identity);
+             //           gridManager.MoveDown();
 
-                if (deltaSwipe.y > 0)
-                {
-                    Instantiate(wallPrefab, new Vector3(transform.position.x, 2, transform.position.z), Quaternion.identity);
-                    gridManager.MoveUp();
+             //       }
 
-                }
+             //       if (deltaSwipe.y > 0)
+             //       {
+             //           Instantiate(wallPrefab, new Vector3(transform.position.x, 2, transform.position.z), Quaternion.identity);
+             //           gridManager.MoveUp();
 
+             //       }
 
+             //
             }
         }
+        
         }
         
         // Update is called once per frame
@@ -200,7 +242,7 @@ public class PacMove1 : MonoBehaviour
         return q;
     }
 
-    void fill(int x, int y)
+    public void fill(int x, int y)
     {
         if (x >= gridManager.width - 1 || x < 1 || y >= gridManager.length - 1 || y < 1)
         {
@@ -218,7 +260,7 @@ public class PacMove1 : MonoBehaviour
         return;
     }
 
-    void function(int x, int y)
+    public void function(int x, int y)
     {
         if (gridManager.gridArray[x, y] == -1)
         { return; }
