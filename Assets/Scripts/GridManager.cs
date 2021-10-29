@@ -43,7 +43,7 @@ public class GridManager : MonoBehaviour
         Progress.text = ("PROGRESS: " + count + "/80%").ToString();
         Life.text = ("LIFE: " + pacMove1.LifeCount).ToString();
 
-        if (count >= 384)
+        if (count >= 80)
         {
             winPanel.SetActive(true);
         }
