@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class GridManager : MonoBehaviour
 {
@@ -10,12 +11,14 @@ public class GridManager : MonoBehaviour
     public int[,] gridArray;
     public GameObject Prefab, wallPrefab;
     public GameObject Pac;
-    public GameObject Apple, Particle, LosePanel;
+    public GameObject Apple, Particle, LosePanel, winPanel;
     public int nDied;
+
+    public TMP_Text Progress, Life;
 
     public Vector3 LastPos;
    
-    public int count;
+    public float count;
     public PacMove1 pacMove1;
 
     // Start is called before the first frame update
@@ -36,7 +39,19 @@ public class GridManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        count = pacMove1.Count * 100 / 480;
+        Progress.text = ("PROGRESS: " + count + "/80%").ToString();
+        Life.text = ("LIFE: " + pacMove1.LifeCount).ToString();
+
+        if (count >= 384)
+        {
+            winPanel.SetActive(true);
+        }
+
+        if(pacMove1.LifeCount == 0)
+        {
+            LosePanel.SetActive(true);
+        }
     }
 
     public void Flare()
@@ -104,4 +119,10 @@ public class GridManager : MonoBehaviour
         Particle.SetActive(false);
     }
 
+    public IEnumerator ExecuteAfterTime3(float time)
+    {
+        yield return new WaitForSeconds(time);
+
+        pacMove1.Geteasy = false;
+    }
 }

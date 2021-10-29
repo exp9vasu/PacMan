@@ -15,6 +15,8 @@ public class PacMove1 : MonoBehaviour
     public Vector2 lastMousePosition;
     private Vector2 touchPosition;
 
+    public bool Geteasy;
+
     public int SwipeLength;
 
     public GameObject InsideBox;
@@ -22,6 +24,7 @@ public class PacMove1 : MonoBehaviour
     public GameObject eyes1,eyes2; 
 
     public int Count;
+    public int LifeCount;
 
 
     private void Awake()
@@ -34,6 +37,10 @@ public class PacMove1 : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        LifeCount = 3;
+
+        Geteasy = false;
+
         Count = 0;
 
         //prevX = currentX;
@@ -288,12 +295,21 @@ public class PacMove1 : MonoBehaviour
         if (other.CompareTag("enemy"))
         {
             PacDie();
+            
+        }
+
+        if (other.CompareTag("apple"))
+        {
+            Geteasy = true;
+            StartCoroutine(gridManager.ExecuteAfterTime3(3));
         }
 
     }
 
     public void PacDie()
     {
+        LifeCount--;
+
         LastPos = transform.position;
         gridManager.Particle.transform.position = new Vector3(LastPos.x, LastPos.y, LastPos.z);
         //gridManager.Particle.SetActive(true);
@@ -303,8 +319,8 @@ public class PacMove1 : MonoBehaviour
         eyes1.GetComponent<MeshRenderer>().enabled = false;
         eyes2.GetComponent<MeshRenderer>().enabled = false;
 
-        gridManager.StartCoroutine(gridManager.ExecuteAfterTime1(2));
-        gridManager.StartCoroutine(gridManager.ExecuteAfterTime2(5));
+        //gridManager.StartCoroutine(gridManager.ExecuteAfterTime1(2));
+        gridManager.StartCoroutine(gridManager.ExecuteAfterTime2(2));
         //Destroy(transform.gameObject);
     }
 }

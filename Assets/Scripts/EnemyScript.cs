@@ -4,16 +4,37 @@ using UnityEngine;
 
 public class EnemyScript : MonoBehaviour
 {
+    public static EnemyScript instance;
+
+    
+
+    private void Awake()
+    {
+        if(instance == null)
+        {
+            instance = this;
+        }
+    }
     // Start is called before the first frame update
     void Start()
     {
+        GetComponent<Animator>().speed = 1;
         GetComponent<ParticleSystem>().Stop();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (PacMove1.instance.Geteasy)
+        {
+            GetComponent<Animator>().speed = 0.5f;
+        }
+        else
+        {
+            GetComponent<Animator>().speed = 1;
+        }
+
+
     }
     private void OnTriggerEnter(Collider other)
     {
@@ -28,7 +49,7 @@ public class EnemyScript : MonoBehaviour
 
             GetComponent<ParticleSystem>().Play();
             GetComponent<Animator>().enabled = false;
-            Destroy(gameObject, 3f);
+            Destroy(gameObject, 2f);
             
         }
     }
@@ -40,4 +61,6 @@ public class EnemyScript : MonoBehaviour
         //    PacMove1.instance.PacDie();
         //}
     }
+
+    
 }
